@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Repository
 public class UserRepository {
-    private List<User> users;
+    private static List<User> users;
     UserRepository(){
         users = new ArrayList<>();
     }
