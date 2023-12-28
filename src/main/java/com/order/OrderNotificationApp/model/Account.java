@@ -1,5 +1,8 @@
 package com.order.OrderNotificationApp.model;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class Account {
     private Double balance;
     private String accountNumber;
