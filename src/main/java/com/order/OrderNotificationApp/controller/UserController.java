@@ -1,14 +1,12 @@
 package com.order.OrderNotificationApp.controller;
 
 import com.order.OrderNotificationApp.model.User;
-import com.order.OrderNotificationApp.repository.UserRepository;
 import com.order.OrderNotificationApp.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

@@ -31,7 +31,6 @@ public class User {
     }
 
     public Account getAccount() {
-
         return account;
     }
 
