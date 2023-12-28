@@ -23,7 +23,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatusCode.valueOf(400));
         }
     }
-
+    // token & input validation
     @PostMapping("/login")
     public ResponseEntity<Object> logIn(@RequestBody User user){
         if(authenticationService.authenticate(user)){
