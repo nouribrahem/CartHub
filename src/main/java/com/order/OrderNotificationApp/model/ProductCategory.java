@@ -1,4 +1,5 @@
 package com.order.OrderNotificationApp.model;
 
-public class ProductCategory {
+public enum ProductCategory {
+    Phones, Bread, Hoodies, Shoes, DairyProducts;
 }
