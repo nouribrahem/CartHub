@@ -1,7 +1,8 @@
 package com.order.OrderNotificationApp.model;
 
 
-import jakarta.validation.constraints.NegativeOrZero;
+import com.order.OrderNotificationApp.model.Enums.ChannelType;
+import com.order.OrderNotificationApp.model.Enums.Language;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
