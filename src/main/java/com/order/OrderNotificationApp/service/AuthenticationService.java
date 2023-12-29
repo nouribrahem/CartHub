@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationService {
-    @Autowired
-    private UserRepository userRepo;
+    private final UserRepository userRepo;
+
+    public AuthenticationService(UserRepository userRepo) {
+        this.userRepo = userRepo;
+    }
 
     public Boolean add(User user){
         return userRepo.add(user);

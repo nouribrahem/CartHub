@@ -2,14 +2,12 @@ package com.order.OrderNotificationApp.repository;
 
 import com.order.OrderNotificationApp.model.User;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 public class UserRepository {
-    private static List<User> users;
+    private final List<User> users;
     UserRepository(){
         users = new ArrayList<>();
     }
@@ -28,7 +26,7 @@ public class UserRepository {
 
     public Boolean checkUserCredentials(User loggedUser) {
         for(User user : users){
-            if(loggedUser.getUserName().equals(user.getUserName()) &&loggedUser.getPassword().equals(user.getPassword()) ){
+            if(loggedUser.getUserName().equals(user.getUserName()) && loggedUser.getPassword().equals(user.getPassword()) ){
                 return true;
             }
         }
