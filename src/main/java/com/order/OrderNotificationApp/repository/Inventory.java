@@ -14,6 +14,13 @@ public class Inventory implements BaseRepository {
         categories = new HashMap<>();
     }
     public boolean addProduct(Product p){
+        for(Map.Entry<ProductCategory,List<Product>> set : categories.entrySet()){
+            for(Product product : set.getValue()){
+                if(product.getSN().equals(p.getSN())){
+                    return false;
+                }
+            }
+        }
         if(categories.containsKey(p.getCategory())){
             List<Product> found = categories.get(p.getCategory());
             if(!found.isEmpty()){
@@ -45,6 +52,7 @@ public class Inventory implements BaseRepository {
 
     @Override
     public boolean add(Object o) {
+
         if(!categories.containsKey((ProductCategory) o)){
             categories.put((ProductCategory) o, new ArrayList<>());
             return true;

@@ -41,8 +41,7 @@ public class ProductController {
         return productService.removeProduct(sn);
     }
     @PostMapping("/add")
-    public Boolean addProduct(@RequestBody Product product){
-
+    public boolean addProduct(@RequestBody Product product){
         return productService.addProduct(product);
     }
     @PostMapping("/categories/add")
