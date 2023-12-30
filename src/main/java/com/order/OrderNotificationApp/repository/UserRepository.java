@@ -6,22 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class UserRepository {
+public class UserRepository implements BaseRepository {
     private final List<User> users;
     UserRepository(){
         users = new ArrayList<>();
-    }
-    public boolean add(User newUser){
-        for(User user : users){
-            if(newUser.getUserName().equals(user.getUserName())){
-                return false;
-            }
-        }
-       users.add(newUser);
-       return true;
-    }
-    public boolean update(String userName, Double deductedPrice){
-        return true;
     }
 
     public Boolean checkUserCredentials(User loggedUser) {
@@ -31,5 +19,42 @@ public class UserRepository {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean add(Object o) {
+        for(User user : users){
+            if(((User) o).getUserName().equals(user.getUserName())){
+                return false;
+            }
+        }
+        users.add(((User) o));
+        return true;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        for(User user : users){
+            if(((User) o).getUserName().equals(user.getUserName())){
+                users.remove(((User) o));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Object getByID(Object o) {
+        for(User user : users){
+            if(((User) o).getUserName().equals(user.getUserName())){
+                return user;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Object getAll() {
+        return users;
     }
 }

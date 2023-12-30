@@ -1,11 +1,15 @@
 package com.order.OrderNotificationApp.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleOrder extends Order{
     private List<Product> productList;
     private String location;
     private Double price;
+    public SimpleOrder(){
+        productList = new ArrayList<>();
+    }
 
     public String getLocation() {
         return location;
@@ -35,8 +39,9 @@ public class SimpleOrder extends Order{
     public String listOrderDetails() {
         StringBuilder stringBuilder = new StringBuilder();
         for(Product p: productList){
+            stringBuilder.append(p.getName()).append(" : ").append(p.getPrice()).append('\n');
         }
-        return null;
+        return stringBuilder.toString();
     }
 
     @Override

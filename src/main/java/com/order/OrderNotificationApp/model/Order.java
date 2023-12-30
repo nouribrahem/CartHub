@@ -3,7 +3,7 @@ package com.order.OrderNotificationApp.model;
 public abstract class Order {
     private String orderID;
     private Double shippingFee;
-    private boolean isShipped;
+    private boolean isShipped = false;
     private Account account;
 
     public String getOrderID() {
