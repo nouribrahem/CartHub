@@ -5,6 +5,8 @@ import com.order.OrderNotificationApp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthenticationService {
     private final UserRepository userRepo;
@@ -18,5 +20,8 @@ public class AuthenticationService {
     }
     public Boolean authenticate(User user){
         return userRepo.checkUserCredentials(user);
+    }
+    public List<User> getAll(){
+        return (List<User>) userRepo.getAll();
     }
 }

@@ -1,7 +1,8 @@
 package com.order.OrderNotificationApp.model;
 
 
-import jakarta.validation.constraints.NegativeOrZero;
+import com.order.OrderNotificationApp.model.Enums.ChannelType;
+import com.order.OrderNotificationApp.model.Enums.Language;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -58,6 +59,16 @@ public class Account {
 
     public void setChannelType(ChannelType channelType) {
         this.channelType = channelType;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "balance=" + balance +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", accountLanguage=" + accountLanguage +
+                ", channelType=" + channelType +
+                '}';
     }
 
 }
