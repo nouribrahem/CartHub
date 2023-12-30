@@ -16,7 +16,7 @@ import java.util.Map;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    @GetMapping(value = "categories/{category}")
+    @GetMapping("/categories/{category}")
     public List<Product> getAvailableItemsInCategory(@PathVariable String category){
         return productService.getAvailableItemsInCategory(category);
     }
@@ -24,12 +24,28 @@ public class ProductController {
     public ResponseEntity<Object> listProductDetails(@PathVariable String sn){
         String details = productService.listProductDetails(sn);
         if(details == null){
-            return new ResponseEntity<>("Product not found!", HttpStatus.OK);
+            return new ResponseEntity<>("Product not found!", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(details, HttpStatus.OK);
     }
-    @GetMapping("{all}")
+    @GetMapping("all")
     public Map<ProductCategory,List<Product>> listAvailableProducts(){
         return productService.listAvailableProducts();
+    }
+    @DeleteMapping ("/categories/remove/{category}")
+    public boolean removeCategory(@PathVariable String category){
+        return productService.removeCategory(category);
+    }
+    @DeleteMapping ("/remove/{sn}")
+    public boolean removeProduct(@PathVariable String sn){
+        return productService.removeProduct(sn);
+    }
+    @PostMapping("/add")
+    public Product addProduct(@RequestBody Product product){
+        return product;
+    }
+    @PostMapping("/categories/add")
+    public boolean addCategory(@RequestBody ProductCategory category){
+        return productService.addCategory(category);
     }
 }
