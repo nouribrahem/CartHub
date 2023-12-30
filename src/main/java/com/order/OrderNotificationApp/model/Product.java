@@ -8,15 +8,6 @@ public class Product {
     private int Count;
     private ProductVendor Vendor;
 
-    public Product(String SN, String name, ProductCategory category, Double price, int count, ProductVendor vendor) {
-        this.SN = SN;
-        Name = name;
-        Category = category;
-        Price = price;
-        Count = count;
-        Vendor = vendor;
-    }
-
     public String getSN() {
         return SN;
     }

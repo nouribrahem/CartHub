@@ -2,7 +2,6 @@ package com.order.OrderNotificationApp.repository;
 
 import com.order.OrderNotificationApp.model.Product;
 import com.order.OrderNotificationApp.model.ProductCategory;
-import com.order.OrderNotificationApp.model.ProductVendor;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -13,10 +12,6 @@ public class Inventory implements BaseRepository {
 
     public Inventory() {
         categories = new HashMap<>();
-        Product p = new Product("112","Samsung Galaxy A12",ProductCategory.Phones,9000.0,5,ProductVendor.Raya);
-        Product p2 = new Product("113","Feta cheese",ProductCategory.DairyProducts,250.0,10,ProductVendor.DinaFarms);
-        addProduct(p);
-        addProduct(p2);
     }
     public boolean addProduct(Product p){
         if(categories.containsKey(p.getCategory())){
@@ -59,9 +54,11 @@ public class Inventory implements BaseRepository {
 
     @Override
     public boolean remove(Object o) {
-        if(categories.containsKey((ProductCategory) o)){
-            categories.remove(o);
-            return true;
+        for(ProductCategory cat : categories.keySet()){
+            if(cat.name().equals(o)){
+                categories.remove(cat);
+                return true;
+            }
         }
         return false;
     }

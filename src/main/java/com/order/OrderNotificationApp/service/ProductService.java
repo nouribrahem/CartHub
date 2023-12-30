@@ -35,7 +35,7 @@ public class ProductService {
     public boolean addProduct(Product product){
         return  inventory.addProduct(product);
     }
-    public boolean removeCategory(ProductCategory category){
+    public boolean removeCategory(String category){
         return  inventory.remove(category);
     }
     public boolean removeProduct(String sn){
