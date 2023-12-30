@@ -31,4 +31,9 @@ public class OrderController {
        return orderService.placeCompoundOrder(orderRequest);
     }
 
+    @PostMapping("/ship/simple")
+    public List<String> shipSimpleOrder(@RequestBody Map.Entry<String ,Integer> shipRequest){
+        return orderService.shipSimpleOrder(shipRequest);
+    }
+
 }

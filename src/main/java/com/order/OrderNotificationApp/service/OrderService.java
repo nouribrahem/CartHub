@@ -8,6 +8,7 @@ import com.order.OrderNotificationApp.repository.OrderRepository;
 import com.order.OrderNotificationApp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -110,5 +111,19 @@ public class OrderService {
         Map.Entry<String, Order> entry = new AbstractMap.SimpleEntry<>(orderRequest.getUsername(), myorder);
         orderRepository.add(entry);
         return compoundMessages;
+    }
+
+    public List<String> shipSimpleOrder(Map.Entry<String, Integer> shipRequest){
+        outputMessages = new ArrayList<>();
+        User user = (User) userRepository.getByID(shipRequest.getKey());
+        Order order = (Order) orderRepository.getByID(shipRequest.getValue());
+        if(order == null){
+            outputMessages.add("Order not found!");
+            return outputMessages;
+        }
+        user.getAccount().setBalance((user.getAccount().getBalance())-((SimpleOrder) order).getShippingFee());
+        order.setShippedAt(LocalDateTime.now());
+        outputMessages.add("Your order was shipped successfully at " + LocalDateTime.now());
+        return outputMessages;
     }
 }
