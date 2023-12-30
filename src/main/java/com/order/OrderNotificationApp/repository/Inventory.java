@@ -110,7 +110,7 @@ public class Inventory implements BaseRepository {
         for(Map.Entry<ProductCategory,List<Product>> set : categories.entrySet()){
             for(Product p : set.getValue()){
                 if(p.getName().equals(productName)){
-                    p.setCount(p.getCount()-count);
+                    p.setCount(p.getCount()+count);
                     return true;
                 }
             }

@@ -59,11 +59,11 @@ public class ProductController {
     }
     @PostMapping("/add")
     public ResponseEntity<Object> addProduct(@RequestBody Product product){
-//        boolean added = productService.addProduct(product);
-//        if(!added){
-//            return new ResponseEntity<>("product already in inventory!", HttpStatus.OK);
-//        }
-        return new ResponseEntity<>(product,HttpStatus.OK);
+        boolean added = productService.addProduct(product);
+        if(!added){
+            return new ResponseEntity<>("product already in inventory!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Product added successfully!", HttpStatus.OK);
     }
     @PostMapping("/categories/add")
     public ResponseEntity<Object> addCategory(@RequestBody ProductCategory category){

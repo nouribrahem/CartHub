@@ -38,7 +38,8 @@ public class SimpleOrder extends Order{
     @Override
     public String listOrderDetails() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(this.getOrderID()).append('\n');
+        stringBuilder.append("Order Id: ").append(this.getOrderID()).append('\n');
+        stringBuilder.append("Created At ").append(createdAt).append(" ").append("ShippedAt ").append(shippedAt).append('\n');
         for(Product p: productList){
             stringBuilder.append(p.toString()).append('\n');
         }
