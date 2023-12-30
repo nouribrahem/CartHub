@@ -19,6 +19,26 @@ public class Product {
         this.Vendor = other.Vendor;
     }
 
+    public void setSN(String SN) {
+        this.SN = SN;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public void setCategory(ProductCategory category) {
+        Category = category;
+    }
+
+    public void setPrice(Double price) {
+        Price = price;
+    }
+
+    public void setVendor(ProductVendor vendor) {
+        Vendor = vendor;
+    }
+
     public String getSN() {
         return SN;
     }
