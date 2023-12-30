@@ -38,15 +38,11 @@ public class SimpleOrder extends Order{
     @Override
     public String listOrderDetails() {
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.getOrderID()).append('\n');
         for(Product p: productList){
-            stringBuilder.append(p.getName()).append(" : ").append(p.getPrice()).append('\n');
+            stringBuilder.append(p.toString()).append('\n');
         }
         return stringBuilder.toString();
-    }
-
-    @Override
-    public Boolean placeOrder() {
-        return null;
     }
 
     @Override

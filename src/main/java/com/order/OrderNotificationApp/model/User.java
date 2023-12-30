@@ -51,4 +51,13 @@ public class User {
         this.account = account;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", account= '" + account.toString() + "'" +
+                '}';
+    }
 }

@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.lang.Math.max;
+
 @Repository
 public class OrderRepository implements BaseRepository{
     private final Map<String, List<Order>> orders;
@@ -17,24 +20,23 @@ public class OrderRepository implements BaseRepository{
 
     @Override
     public boolean add(Object o) {
-        Order order = (Order)o;
-        if(orders.containsKey(order.getAccount().getAccountNumber())){
-            List<Order> myOrders = orders.get(order.getAccount().getAccountNumber());
-            myOrders.add(order);
+        Map.Entry<String,Order> mp = (Map.Entry<String,Order>)o;
+        if(orders.containsKey(mp.getKey())){
+            List<Order> myOrders = orders.get(mp.getKey());
+            myOrders.add(mp.getValue());
             return true;
         }
         List<Order> orderList = new ArrayList<>();
-        orderList.add(order);
-        orders.put(order.getAccount().getAccountNumber(),orderList );
+        orderList.add(mp.getValue());
+        orders.put(mp.getKey(),orderList);
         return true;
     }
 
     @Override
     public boolean remove(Object o) {
-        String orderID = (String)o;
         for(Map.Entry<String,List<Order>> entry: orders.entrySet()){
             for(Order order :entry.getValue()){
-                if(order.getOrderID().equals(orderID)){
+                if(order.getOrderID() == ((int)o)){
                     entry.getValue().remove(order);
                     return true;
                 }
@@ -45,10 +47,9 @@ public class OrderRepository implements BaseRepository{
 
     @Override
     public Object getByID(Object o) {
-        String orderID = (String)o;
         for(Map.Entry<String,List<Order>> entry: orders.entrySet()){
             for(Order order :entry.getValue()){
-                if(order.getOrderID().equals(orderID)){
+                if(order.getOrderID() == (int) o){
                     return order;
                 }
             }
@@ -59,5 +60,14 @@ public class OrderRepository implements BaseRepository{
     @Override
     public Object getAll() {
         return orders;
+    }
+    public int getLastID(){
+        int lastID = -1;
+        for(Map.Entry<String,List<Order>> entry: orders.entrySet()){
+            for(Order o :entry.getValue()){
+                lastID = max(o.getOrderID(),lastID);
+            }
+        }
+        return lastID;
     }
 }

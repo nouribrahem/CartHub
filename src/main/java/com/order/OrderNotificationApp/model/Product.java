@@ -7,6 +7,17 @@ public class Product {
     private Double Price;
     private int Count;
     private ProductVendor Vendor;
+    public Product(){
+
+    }
+    public Product(Product other) {
+        this.SN = other.SN;
+        this.Name = other.Name;
+        this.Category = other.Category;
+        this.Price = other.Price;
+        this.Count = other.Count;
+        this.Vendor = other.Vendor;
+    }
 
     public String getSN() {
         return SN;
@@ -54,5 +65,16 @@ public class Product {
 
     public void setVendor(ProductVendor vendor) {
         Vendor = vendor;
+    }
+    @Override
+    public String toString() {
+        return "Product{" +
+                "SN='" + SN + '\'' +
+                ", Name='" + Name + '\'' +
+                ", Count= " + Count +
+                ", Category=" + Category +
+                ", Price=" + Price +
+                ", Vendor=" + Vendor +
+                '}';
     }
 }

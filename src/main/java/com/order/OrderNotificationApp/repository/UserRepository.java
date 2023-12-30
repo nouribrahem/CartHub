@@ -46,8 +46,8 @@ public class UserRepository implements BaseRepository {
     @Override
     public Object getByID(Object o) {
         for(User user : users){
-            if(((User) o).getUserName().equals(user.getUserName())){
-                return user;
+            if(o.equals(user.getUserName())){
+                return (User)user;
             }
         }
         return null;
@@ -57,4 +57,5 @@ public class UserRepository implements BaseRepository {
     public Object getAll() {
         return users;
     }
+
 }

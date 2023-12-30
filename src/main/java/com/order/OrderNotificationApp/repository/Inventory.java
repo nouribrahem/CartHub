@@ -87,4 +87,26 @@ public class Inventory implements BaseRepository {
         }
         return false;
     }
+
+    public Product getProductByName(String productName){
+        for(Map.Entry<ProductCategory,List<Product>> set : categories.entrySet()){
+            for(Product p : set.getValue()){
+                if(p.getName().equals(productName)){
+                    return p;
+                }
+            }
+        }
+        return null;
+    }
+    public Boolean updateProductCount(String productName, int count){
+        for(Map.Entry<ProductCategory,List<Product>> set : categories.entrySet()){
+            for(Product p : set.getValue()){
+                if(p.getName().equals(productName)){
+                    p.setCount(p.getCount()-count);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

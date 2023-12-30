@@ -1,11 +1,13 @@
 package com.order.OrderNotificationApp.controller;
 
+import com.order.OrderNotificationApp.Requests.CompoundOrderRequest;
+import com.order.OrderNotificationApp.Requests.SimpleOrderRequest;
 import com.order.OrderNotificationApp.model.Order;
-import com.order.OrderNotificationApp.model.SimpleOrder;
 import com.order.OrderNotificationApp.service.OrderService;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/orders")
@@ -16,16 +18,17 @@ public class OrderController {
     }
 
     @GetMapping("{orderId}")
-    public String listOrderDetails(@PathVariable String orderId){
+    public String listOrderDetails(@PathVariable int orderId){
         return orderService.getOrderDetails(orderId);
     }
 
-    @PostMapping("/add")
-    public String placeOrder(@RequestBody SimpleOrder order){
-        if(orderService.addOrder(order)){
-            return "Order is placed";
-        }
-        return "Could not create order!";
+    @PostMapping("/place/simple")
+    public Map.Entry<List<String>, Order> placeSimpleOrder(@RequestBody SimpleOrderRequest orderRequest){
+       return orderService.placeSimpleOrder(orderRequest);
+    }
+    @PostMapping("/place/compound")
+    public List<List<String>> placeCompoundOrder(@RequestBody CompoundOrderRequest orderRequest){
+       return orderService.placeCompoundOrder(orderRequest);
     }
 
 }

@@ -61,4 +61,14 @@ public class Account {
         this.channelType = channelType;
     }
 
+    @Override
+    public String toString() {
+        return "Account{" +
+                "balance=" + balance +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", accountLanguage=" + accountLanguage +
+                ", channelType=" + channelType +
+                '}';
+    }
+
 }
