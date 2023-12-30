@@ -8,7 +8,7 @@ import java.util.*;
 
 @Repository
 public class Inventory implements BaseRepository {
-    private static Map<ProductCategory, List<Product>> categories;
+    private static Map<ProductCategory, List<Product>> categories = new HashMap<>();
 
     public Inventory() {
         categories = new HashMap<>();
@@ -52,7 +52,6 @@ public class Inventory implements BaseRepository {
 
     @Override
     public boolean add(Object o) {
-
         if(!categories.containsKey((ProductCategory) o)){
             categories.put((ProductCategory) o, new ArrayList<>());
             return true;

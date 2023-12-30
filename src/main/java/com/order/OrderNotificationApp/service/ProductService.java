@@ -27,9 +27,6 @@ public class ProductService {
     public List<Product> getAvailableItemsInCategory(String category){
         return inventory.getCategoryProducts(category);
     }
-    public boolean addCategory(ProductCategory category){
-        return  inventory.add(category);
-    }
     public boolean addProduct(Product product){
         return  inventory.addProduct(product);
     }
