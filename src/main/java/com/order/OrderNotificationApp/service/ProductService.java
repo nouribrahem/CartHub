@@ -3,7 +3,6 @@ package com.order.OrderNotificationApp.service;
 import com.order.OrderNotificationApp.model.Product;
 import com.order.OrderNotificationApp.model.ProductCategory;
 import com.order.OrderNotificationApp.repository.Inventory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +10,7 @@ import java.util.Map;
 
 @Service
 public class ProductService {
-    @Autowired
-    private Inventory inventory;
+    private final Inventory inventory;
     ProductService(Inventory i){
         this.inventory = i;
     }

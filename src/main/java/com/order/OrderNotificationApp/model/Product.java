@@ -23,32 +23,16 @@ public class Product {
         return SN;
     }
 
-    public void setSN(String SN) {
-        this.SN = SN;
-    }
-
     public String getName() {
         return Name;
-    }
-
-    public void setName(String name) {
-        Name = name;
     }
 
     public ProductCategory getCategory() {
         return Category;
     }
 
-    public void setCategory(ProductCategory category) {
-        Category = category;
-    }
-
     public Double getPrice() {
         return Price;
-    }
-
-    public void setPrice(Double price) {
-        Price = price;
     }
 
     public int getCount() {
@@ -61,10 +45,6 @@ public class Product {
 
     public ProductVendor getVendor() {
         return Vendor;
-    }
-
-    public void setVendor(ProductVendor vendor) {
-        Vendor = vendor;
     }
     @Override
     public String toString() {
