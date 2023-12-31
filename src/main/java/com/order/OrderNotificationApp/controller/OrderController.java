@@ -1,7 +1,8 @@
 package com.order.OrderNotificationApp.controller;
 
-import com.order.OrderNotificationApp.Requests.CompoundOrderRequest;
-import com.order.OrderNotificationApp.Requests.SimpleOrderRequest;
+import com.order.OrderNotificationApp.Requests.CompoundOrderMyRequest;
+import com.order.OrderNotificationApp.Requests.MyRequest;
+import com.order.OrderNotificationApp.Requests.SimpleOrderMyRequest;
 import com.order.OrderNotificationApp.model.Order;
 import com.order.OrderNotificationApp.service.OrderService;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,12 @@ public class OrderController {
     }
 
     @PostMapping("/place/simple")
-    public Map.Entry<List<String>, Order> placeSimpleOrder(@RequestBody SimpleOrderRequest orderRequest){
-       return orderService.placeSimpleOrder(orderRequest);
+    public Map.Entry<List<String>, Order> placeSimpleOrder(@RequestBody SimpleOrderMyRequest orderMyRequest){
+       return orderService.placeSimpleOrder(orderMyRequest);
     }
     @PostMapping("/place/compound")
-    public List<List<String>> placeCompoundOrder(@RequestBody CompoundOrderRequest orderRequest){
-       return orderService.placeCompoundOrder(orderRequest);
+    public List<List<String>> placeCompoundOrder(@RequestBody CompoundOrderMyRequest orderMyRequest){
+       return orderService.placeCompoundOrder(orderMyRequest);
     }
 
     @PostMapping("/ship/simple")

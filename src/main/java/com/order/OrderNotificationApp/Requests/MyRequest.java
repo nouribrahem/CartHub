@@ -1,7 +1,10 @@
 package com.order.OrderNotificationApp.Requests;
 
-public class Request {
+public class MyRequest {
     private String username;
+    public MyRequest(){
+
+    }
 
     public String getUsername() {
         return username;

@@ -1,7 +1,8 @@
 package com.order.OrderNotificationApp.service;
 
-import com.order.OrderNotificationApp.Requests.CompoundOrderRequest;
-import com.order.OrderNotificationApp.Requests.SimpleOrderRequest;
+import com.order.OrderNotificationApp.Requests.CompoundOrderMyRequest;
+import com.order.OrderNotificationApp.Requests.MyRequest;
+import com.order.OrderNotificationApp.Requests.SimpleOrderMyRequest;
 import com.order.OrderNotificationApp.model.*;
 import com.order.OrderNotificationApp.repository.Inventory;
 import com.order.OrderNotificationApp.repository.OrderRepository;
@@ -28,14 +29,15 @@ public class OrderService {
         outputMessages = new ArrayList<>();
     }
 
-    public Order createSimpleOrder(SimpleOrderRequest orderRequest){
+    public Order createSimpleOrder(MyRequest orderMyRequest){
         List<Product> orderProducts = new ArrayList<>();
 
+
         Order simpleOrder = new SimpleOrder();
-        ((SimpleOrder) simpleOrder).setLocation(orderRequest.getLocation());
+        ((SimpleOrder) simpleOrder).setLocation(((SimpleOrderMyRequest) orderMyRequest).getLocation());
 
         double totalPrice = 0.0;
-        for(Map.Entry<String,Integer> entry:orderRequest.getProductDetails()){
+        for(Map.Entry<String,Integer> entry:((SimpleOrderMyRequest) orderMyRequest).getProductDetails()){
             Product tmp = (inventory.getProductByName(entry.getKey()));
             if(tmp != null && entry.getValue() <= tmp.getCount()){
                 Product p = new Product(tmp);
@@ -54,14 +56,14 @@ public class OrderService {
         ((SimpleOrder) simpleOrder).setProductList(orderProducts);
         return simpleOrder;
     }
-    public Map.Entry<List<String>,Order> placeSimpleOrder(SimpleOrderRequest orderRequest){
+    public Map.Entry<List<String>,Order> placeSimpleOrder(MyRequest orderMyRequest){
         outputMessages = new ArrayList<>();
-        User user = (User) userRepository.getByID(orderRequest.getUsername());
+        User user = (User) userRepository.getByID(orderMyRequest.getUsername());
         if(user == null){
             outputMessages.add("Invalid user please sign up!");
             return new AbstractMap.SimpleEntry<>(outputMessages, null);
         }
-        Order myorder = (SimpleOrder)createSimpleOrder(orderRequest);
+        Order myorder = createSimpleOrder(orderMyRequest);
         if(myorder == null){
             outputMessages.add("All selected items are out of Stock!");
             return new AbstractMap.SimpleEntry<>(outputMessages, null);
@@ -71,12 +73,12 @@ public class OrderService {
             return new AbstractMap.SimpleEntry<>(outputMessages, myorder);
         }
         myorder.setAccount(user.getAccount());
-        updateProductCount(orderRequest.getProductDetails());
+        updateProductCount(((SimpleOrderMyRequest) orderMyRequest).getProductDetails());
         user.getAccount().setBalance((user.getAccount().getBalance())-((SimpleOrder) myorder).getPrice());
         ((SimpleOrder) myorder).setCreatedAt(LocalDateTime.now());
         ((SimpleOrder) myorder).setOrderID(orderRepository.getLastID());
 
-        Map.Entry<String, Order> entry = new AbstractMap.SimpleEntry<>(orderRequest.getUsername(), myorder);
+        Map.Entry<String, Order> entry = new AbstractMap.SimpleEntry<>(orderMyRequest.getUsername(), myorder);
 
         orderRepository.add(entry);
         return new AbstractMap.SimpleEntry<>(outputMessages, myorder);
@@ -97,11 +99,11 @@ public class OrderService {
         return order.listOrderDetails();
     }
 
-    public List<List<String>> placeCompoundOrder(CompoundOrderRequest orderRequest) {
+    public List<List<String>> placeCompoundOrder(MyRequest orderMyRequest) {
         List<List<String>> compoundMessages = new ArrayList<>();
-        User user = (User) userRepository.getByID(orderRequest.getUsername());
+        User user = (User) userRepository.getByID(orderMyRequest.getUsername());
         Order myorder = new CompoundOrder();
-        for(SimpleOrderRequest simpleOrderRequest :orderRequest.getSimpleOrderRequest()){
+        for(SimpleOrderMyRequest simpleOrderRequest :((CompoundOrderMyRequest) orderMyRequest).getSimpleOrderRequest()){
             Map.Entry<List<String>, Order> entry2 = placeSimpleOrder(simpleOrderRequest);
             compoundMessages.add(entry2.getKey());
             ((CompoundOrder) myorder).addOrder(entry2.getValue());
@@ -109,7 +111,7 @@ public class OrderService {
         myorder.setAccount(user.getAccount());
         myorder.setCreatedAt(LocalDateTime.now());
         ((CompoundOrder) myorder).setOrderID(orderRepository.getLastID());
-        Map.Entry<String, Order> entry = new AbstractMap.SimpleEntry<>(orderRequest.getUsername(), myorder);
+        Map.Entry<String, Order> entry = new AbstractMap.SimpleEntry<>(orderMyRequest.getUsername(), myorder);
         orderRepository.add(entry);
         return compoundMessages;
     }
