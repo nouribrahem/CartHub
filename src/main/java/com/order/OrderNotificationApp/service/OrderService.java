@@ -166,6 +166,7 @@ public class OrderService {
         }
         order.getAccount().setBalance(order.getAccount().getBalance()+order.getShippingFee());
         outputMessages.add("Shipping is canceled successfully");
+        order.setShipped(false);
         return new AbstractMap.SimpleEntry<>(outputMessages, true);
 
     }
@@ -185,6 +186,7 @@ public class OrderService {
             o.getAccount().setBalance(o.getAccount().getBalance()+o.getShippingFee());
         }
         outputMessages.add("Shipping is canceled successfully");
+        order.setShipped(false);
         return new AbstractMap.SimpleEntry<>(outputMessages, true);
     }
     public List<String> cancelOrderPlacementSimple(int orderId) {
