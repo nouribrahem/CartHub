@@ -20,6 +20,9 @@ public class CompoundOrder extends Order{
     @Override
     public String listOrderDetails() {
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Order ID: ").append(getOrderID()).append("\n");
+        stringBuilder.append("Created At ").append(createdAt).append(" ").append("ShippedAt ").append(shippedAt).append('\n');
+
         for (Order o: orders ){
             stringBuilder.append(o.listOrderDetails()).append(" ");
         }

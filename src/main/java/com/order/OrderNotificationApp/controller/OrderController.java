@@ -39,15 +39,14 @@ public class OrderController {
     public List<String> shipCompoundOrder(@RequestBody Map.Entry<String ,Integer> shipRequest){
         return orderService.shipCompoundOrder(shipRequest);
     }
-    @GetMapping("/cancel/simple/{orderId}")
-    public List<String> cancelOrderShippingSimple(@PathVariable int orderId){
+    @GetMapping("/cancel-ship/simple/{orderId}")
+    public Map.Entry<List<String>, Boolean> cancelOrderShippingSimple(@PathVariable int orderId){
         return orderService.cancelOrderShippingSimple(orderId);
     }
-    @GetMapping("/cancel/compound/{orderId}")
-    public List<String> cancelOrderShippingCompound(@PathVariable int orderId){
+    @GetMapping("/cancel-ship/compound/{orderId}")
+    public Map.Entry<List<String>, Boolean> cancelOrderShippingCompound(@PathVariable int orderId){
         return orderService.cancelOrderShippingCompound(orderId);
     }
-
     @GetMapping("/cancel/simple/{orderId}")
     public List<String> cancelOrderPlacementSimple(@PathVariable int orderId){
         return orderService.cancelOrderPlacementSimple(orderId);
