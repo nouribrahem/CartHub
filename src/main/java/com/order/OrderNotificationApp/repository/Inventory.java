@@ -1,5 +1,6 @@
 package com.order.OrderNotificationApp.repository;
 
+import com.order.OrderNotificationApp.model.Enums.ProductVendor;
 import com.order.OrderNotificationApp.model.Product;
 import com.order.OrderNotificationApp.model.Enums.ProductCategory;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,20 @@ public class Inventory implements BaseRepository {
 
     public Inventory() {
         categories = new HashMap<>();
+        Product p1 = new Product("1","Iphone 11",ProductCategory.Phones,14000.0,5, ProductVendor.Raya);
+        Product p2 = new Product("2","Iphone 13",ProductCategory.Phones,54000.0,5, ProductVendor.Raya);
+        Product p3 = new Product("3","Bread",ProductCategory.Bread,10.0,150, ProductVendor.ElHoreya);
+        Product p4 = new Product("4","Shoes",ProductCategory.Shoes,10.0,1000, ProductVendor.Adidas);
+        List<Product> l = new ArrayList<>();
+        l.add(p1);l.add(p2);
+        categories.put(ProductCategory.Phones,l);
+        l = new ArrayList<>();
+        l.add(p3);
+        categories.put(ProductCategory.Bread,l);
+        l = new ArrayList<>();
+        l.add(p4);
+        categories.put(ProductCategory.Shoes,l);
+
     }
     public boolean addProduct(Product p){
         for(Map.Entry<ProductCategory,List<Product>> set : categories.entrySet()){

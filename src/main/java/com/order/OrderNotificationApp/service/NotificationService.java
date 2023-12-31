@@ -57,7 +57,7 @@ public class NotificationService {
             String user = orderRepository.getUserByOrderID(((SimpleOrder)o).getOrderID());
             usernames.add(user);
             OrderPlacementNotification notification = new OrderPlacementNotification(
-                    (User)userRepository.getByID(username),((SimpleOrder)o).getOrderID(),((SimpleOrder)o).getProductList());
+                    (User)userRepository.getByID(user),((SimpleOrder)o).getOrderID(),((SimpleOrder)o).getProductList());
             notificationQueue.add(notification);
         }
         return new CompoundOrderPlacementNotification((User)userRepository.getByID(username),orderId,usernames);
@@ -68,7 +68,8 @@ public class NotificationService {
         for(Order o:((CompoundOrder)order).getOrders()){
             String user = orderRepository.getUserByOrderID(((SimpleOrder)o).getOrderID());
             usernames.add(user);
-            ShippingNotification notification = new ShippingNotification((User)userRepository.getByID(username),((SimpleOrder)o).getOrderID());
+            ShippingNotification notification = new ShippingNotification(
+                    (User)userRepository.getByID(user),((SimpleOrder)o).getOrderID());
             notificationQueue.add(notification);
         }
         return new CompoundShippingNotification((User)userRepository.getByID(username),orderId,usernames);

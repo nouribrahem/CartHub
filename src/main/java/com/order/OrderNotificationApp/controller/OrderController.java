@@ -31,7 +31,7 @@ public class OrderController {
             String redirect="/notifications/"+orderMyRequest.getUsername()+"/"+order.getValue().getOrderID();
             return ResponseEntity.status(302).header("Location", redirect).body("redirecting");
         }
-        return new ResponseEntity<>(order.getKey(), HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(order, HttpStatusCode.valueOf(200));
     }
     @PostMapping("/place/compound")
     public ResponseEntity<Object> placeCompoundOrder(@RequestBody CompoundOrderMyRequest orderMyRequest){

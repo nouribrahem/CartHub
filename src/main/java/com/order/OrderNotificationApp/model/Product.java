@@ -13,6 +13,14 @@ public class Product {
     public Product(){
 
     }
+    public Product(String sn,String name,ProductCategory cat, Double p, int c, ProductVendor pv ){
+        this.SN = sn;
+        this.Name = name;
+        this.Category = cat;
+        this.Price = p;
+        this.Count = c;
+        this.Vendor = pv;
+    }
     public Product(Product other) {
         this.SN = other.SN;
         this.Name = other.Name;
