@@ -37,4 +37,7 @@ public class ProductService {
         return inventory.removeProduct(sn);
     }
 
+    public Map<ProductCategory, Integer> getCategoryCount() {
+        return inventory.getCategoryCount();
+    }
 }

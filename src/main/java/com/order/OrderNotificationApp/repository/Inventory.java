@@ -116,4 +116,16 @@ public class Inventory implements BaseRepository {
         }
         return false;
     }
+
+    public Map<ProductCategory, Integer> getCategoryCount() {
+        Map<ProductCategory,Integer> categoryCount = new HashMap<>();
+        for(Map.Entry<ProductCategory,List<Product>> set:categories.entrySet()){
+            int count = 0;
+            for(Product p:set.getValue()){
+                count+=p.getCount();
+            }
+            categoryCount.put(set.getKey(),count);
+        }
+        return categoryCount;
+    }
 }

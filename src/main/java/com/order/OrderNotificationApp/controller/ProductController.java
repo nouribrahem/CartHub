@@ -41,6 +41,14 @@ public class ProductController {
         }
         return new ResponseEntity<>(available, HttpStatus.OK);
     }
+    @GetMapping("/categories/count")
+    public ResponseEntity<Object> getCategoryCount(){
+        Map<ProductCategory, Integer> count = productService.getCategoryCount();
+        if(count.isEmpty()){
+            return new ResponseEntity<>("stock is currently empty!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
     @DeleteMapping ("/categories/remove/{category}")
     public ResponseEntity<Object> removeCategory(@PathVariable String category){
         boolean removed = productService.removeCategory(category);
