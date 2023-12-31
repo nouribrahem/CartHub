@@ -81,6 +81,7 @@ public class OrderService {
         Map.Entry<String, Order> entry = new AbstractMap.SimpleEntry<>(orderMyRequest.getUsername(), myorder);
 
         orderRepository.add(entry);
+
         return new AbstractMap.SimpleEntry<>(outputMessages, myorder);
     }
     public Boolean updateProductCount(List<Map.Entry<String, Integer>> products ){
@@ -118,28 +119,28 @@ public class OrderService {
         return entry3;
     }
 
-    public List<String> shipSimpleOrder(Map.Entry<String, Integer> shipRequest){
+    public  Map.Entry<List<String>, Boolean> shipSimpleOrder(Map.Entry<String, Integer> shipRequest){
         outputMessages = new ArrayList<>();
         User user = (User) userRepository.getByID(shipRequest.getKey());
         Order order = (Order) orderRepository.getByID(shipRequest.getValue());
         if(order == null){
             outputMessages.add("Order not found!");
-            return outputMessages;
+            return new AbstractMap.SimpleEntry<>(outputMessages,false);
         }
         user.getAccount().setBalance((user.getAccount().getBalance())-((SimpleOrder) order).getShippingFee());
         order.setShippedAt(LocalDateTime.now());
         order.setShipped(true);
         outputMessages.add("Your order was shipped successfully at " + LocalDateTime.now());
-        return outputMessages;
+        return new AbstractMap.SimpleEntry<>(outputMessages,true);
     }
 
-    public List<String> shipCompoundOrder(Map.Entry<String, Integer> shipRequest) {
+    public Map.Entry<List<String>, Boolean> shipCompoundOrder(Map.Entry<String, Integer> shipRequest) {
         outputMessages = new ArrayList<>();
         User user = (User) userRepository.getByID(shipRequest.getKey());
         Order order = (Order) orderRepository.getByID(shipRequest.getValue());
         if(order == null){
             outputMessages.add("Order not found!");
-            return outputMessages;
+            return new AbstractMap.SimpleEntry<>(outputMessages,false);
         }
         double shippingPerUser = order.getShippingFee() / ((CompoundOrder) order).getOrders().size();
         for(Order o:((CompoundOrder) order).getOrders()){
@@ -149,7 +150,7 @@ public class OrderService {
         order.setShippedAt(LocalDateTime.now());
         order.setShipped(true);
         outputMessages.add("Your order was shipped successfully at " + LocalDateTime.now());
-        return outputMessages;
+        return new AbstractMap.SimpleEntry<>(outputMessages,true);
     }
     public Map.Entry<List<String>, Boolean>  cancelOrderShippingSimple(int orderId){
         outputMessages = new ArrayList<>();

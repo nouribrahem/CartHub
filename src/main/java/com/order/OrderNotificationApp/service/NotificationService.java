@@ -54,8 +54,7 @@ public class NotificationService {
                     user,((SimpleOrder)o).getOrderID(),((SimpleOrder)o).getProductList());
             notificationQueue.add(notification);
         }
-        CompoundOrderPlacementNotification notification = new CompoundOrderPlacementNotification(username,orderId,usernames);
-        return notification;
+        return new CompoundOrderPlacementNotification(username,orderId,usernames);
     }
     public NotificationTemplate notifyCompoundOrderShipped(String username, int orderId) {
         Order order = (Order) orderRepository.getByID(orderId);
@@ -66,8 +65,11 @@ public class NotificationService {
             ShippingNotification notification = new ShippingNotification(user,((SimpleOrder)o).getOrderID());
             notificationQueue.add(notification);
         }
-        CompoundShippingNotification notification = new CompoundShippingNotification(username,orderId,usernames);
-        return notification;
+        return new CompoundShippingNotification(username,orderId,usernames);
     }
-
+    public void removeNotification(){
+        if(!notificationQueue.isEmpty()){
+            notificationQueue.poll();
+        }
+    }
 }

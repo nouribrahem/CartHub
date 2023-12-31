@@ -36,21 +36,31 @@ public class OrderController {
     @PostMapping("/place/compound")
     public ResponseEntity<Object> placeCompoundOrder(@RequestBody CompoundOrderMyRequest orderMyRequest){
         Map.Entry<List<List<String>>, Order> order = orderService.placeCompoundOrder(orderMyRequest);
-        if(order != null){
-            String redirect="/notifications/compound/"+orderMyRequest.getUsername()+"/"+order.getValue().getOrderID();
-            return ResponseEntity.status(302).header("Location", redirect).body("redirecting");
+        if(order.getValue() == null){
+            return new ResponseEntity<>(order.getKey(), HttpStatusCode.valueOf(200));
         }
-        return new ResponseEntity<>(order.getKey(), HttpStatusCode.valueOf(200));
+        String redirect="/notifications/compound/"+orderMyRequest.getUsername()+"/"+order.getValue().getOrderID();
+        return ResponseEntity.status(302).header("Location", redirect).body("redirecting");
+
     }
 
     @PostMapping("/ship/simple")
-    public List<String> shipSimpleOrder(@RequestBody Map.Entry<String ,Integer> shipRequest){
-        List<String>order = orderService.shipSimpleOrder(shipRequest);
-
+    public ResponseEntity<Object> shipSimpleOrder(@RequestBody Map.Entry<String ,Integer> shipRequest){
+        Map.Entry<List<String>, Boolean> response = orderService.shipSimpleOrder(shipRequest);
+        if(!response.getValue()){
+            return new ResponseEntity<>(response.getKey(), HttpStatusCode.valueOf(200));
+        }
+        String redirect="/notifications/ship/"+shipRequest.getKey()+"/"+shipRequest.getValue();
+        return ResponseEntity.status(302).header("Location", redirect).body("redirecting");
     }
     @PostMapping("/ship/compound")
-    public List<String> shipCompoundOrder(@RequestBody Map.Entry<String ,Integer> shipRequest){
-        return orderService.shipCompoundOrder(shipRequest);
+    public ResponseEntity<Object> shipCompoundOrder(@RequestBody Map.Entry<String ,Integer> shipRequest){
+        Map.Entry<List<String>, Boolean> response = orderService.shipCompoundOrder(shipRequest);
+        if(!response.getValue()){
+            return new ResponseEntity<>(response.getKey(), HttpStatusCode.valueOf(200));
+        }
+        String redirect="/notifications/ship/compound/"+shipRequest.getKey()+"/"+shipRequest.getValue();
+        return ResponseEntity.status(302).header("Location", redirect).body("redirecting");
     }
     @GetMapping("/cancel-ship/simple/{orderId}")
     public Map.Entry<List<String>, Boolean> cancelOrderShippingSimple(@PathVariable int orderId){
