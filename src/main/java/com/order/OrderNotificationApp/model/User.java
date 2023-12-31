@@ -17,7 +17,18 @@ public class User {
     @Pattern(regexp = "\\d+", message = "Phone must be numeric")
     private String phoneNumber;
     @NotNull
+    @NotBlank(message = "Email is mandatory")
+    private String email;
+    @NotNull
     private Account account;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getUserName() {
         return userName;
@@ -57,6 +68,7 @@ public class User {
                 "userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", email= '" + email + "\'" +
                 ", account= '" + account.toString() + "'" +
                 '}';
     }

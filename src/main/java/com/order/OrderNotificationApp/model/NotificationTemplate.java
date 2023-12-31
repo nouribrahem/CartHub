@@ -1,22 +1,17 @@
 package com.order.OrderNotificationApp.model;
 
-import com.order.OrderNotificationApp.model.Enums.ChannelType;
-import com.order.OrderNotificationApp.model.Enums.Language;
-
 public abstract class NotificationTemplate {
-    protected String username;
+    protected User user;
     protected int orderId;
-    protected Language language;
-    protected ChannelType channelType;
     protected String content;
     protected String subject;
 
-    public String getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getOrderId() {
@@ -25,22 +20,6 @@ public abstract class NotificationTemplate {
 
     public void setOrderId(int orderId) {
         this.orderId = orderId;
-    }
-
-    public Language getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(Language language) {
-        this.language = language;
-    }
-
-    public ChannelType getChannelType() {
-        return channelType;
-    }
-
-    public void setChannelType(ChannelType channelType) {
-        this.channelType = channelType;
     }
 
     public String getContent() {
@@ -59,8 +38,8 @@ public abstract class NotificationTemplate {
         this.subject = subject;
     }
 
-    NotificationTemplate(String username, int orderId){
-        this.username = username;
+    NotificationTemplate(User user, int orderId){
+        this.user = user;
         this.orderId = orderId;
     }
 

@@ -1,7 +1,9 @@
 package com.order.OrderNotificationApp.service;
 
 import com.order.OrderNotificationApp.model.*;
+import com.order.OrderNotificationApp.repository.NotificationRepository;
 import com.order.OrderNotificationApp.repository.OrderRepository;
+import com.order.OrderNotificationApp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,23 +13,27 @@ import java.util.Queue;
 
 @Service
 public class NotificationService {
+    private final NotificationRepository notificationRepository;
+    private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final Queue<NotificationTemplate> notificationQueue;
-    public NotificationService(OrderRepository orderRepository){
+    public NotificationService(OrderRepository orderRepository,UserRepository userRepository){
         this.orderRepository = orderRepository;
         notificationQueue = new LinkedList<>();
+        notificationRepository = new NotificationRepository();
+        this.userRepository = userRepository;
     }
     public NotificationTemplate notifySimpleOrderPlaced(String username, int orderId) {
         Order order = (Order) orderRepository.getByID(orderId);
         OrderPlacementNotification notification = new OrderPlacementNotification(
-                username,orderId,((SimpleOrder)order).getProductList());
+                (User)userRepository.getByID(username),orderId,((SimpleOrder)order).getProductList());
 
         notificationQueue.add(notification);
         return notification;
     }
     public NotificationTemplate notifySimpleOrderShipped(String username, int orderId) {
         Order order = (Order) orderRepository.getByID(orderId);
-        ShippingNotification notification = new ShippingNotification(username,orderId);
+        ShippingNotification notification = new ShippingNotification((User)userRepository.getByID(username),orderId);
         notificationQueue.add(notification);
         return notification;
     }
@@ -51,10 +57,10 @@ public class NotificationService {
             String user = orderRepository.getUserByOrderID(((SimpleOrder)o).getOrderID());
             usernames.add(user);
             OrderPlacementNotification notification = new OrderPlacementNotification(
-                    user,((SimpleOrder)o).getOrderID(),((SimpleOrder)o).getProductList());
+                    (User)userRepository.getByID(username),((SimpleOrder)o).getOrderID(),((SimpleOrder)o).getProductList());
             notificationQueue.add(notification);
         }
-        return new CompoundOrderPlacementNotification(username,orderId,usernames);
+        return new CompoundOrderPlacementNotification((User)userRepository.getByID(username),orderId,usernames);
     }
     public NotificationTemplate notifyCompoundOrderShipped(String username, int orderId) {
         Order order = (Order) orderRepository.getByID(orderId);
@@ -62,14 +68,21 @@ public class NotificationService {
         for(Order o:((CompoundOrder)order).getOrders()){
             String user = orderRepository.getUserByOrderID(((SimpleOrder)o).getOrderID());
             usernames.add(user);
-            ShippingNotification notification = new ShippingNotification(user,((SimpleOrder)o).getOrderID());
+            ShippingNotification notification = new ShippingNotification((User)userRepository.getByID(username),((SimpleOrder)o).getOrderID());
             notificationQueue.add(notification);
         }
-        return new CompoundShippingNotification(username,orderId,usernames);
+        return new CompoundShippingNotification((User)userRepository.getByID(username),orderId,usernames);
     }
     public void removeNotification(){
         if(!notificationQueue.isEmpty()){
-            notificationQueue.poll();
+            notificationRepository.add(notificationQueue.poll());
         }
+    }
+    public String getLiveStat(){
+        return notificationRepository.getLiveStat();
+    }
+
+    public List<NotificationTemplate> getSent() {
+        return (List<NotificationTemplate>) notificationRepository.getAll();
     }
 }

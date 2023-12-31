@@ -2,10 +2,14 @@ package com.order.OrderNotificationApp.controller;
 
 import com.order.OrderNotificationApp.model.NotificationTemplate;
 import com.order.OrderNotificationApp.service.NotificationService;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("notifications")
@@ -33,6 +37,18 @@ public class NotificationController {
     @GetMapping("list")
     public String listNotificationsInQueue(){
         return notificationService.listNotifications();
+    }
+    @GetMapping("/stat")
+    public String getStat(){
+        return notificationService.getLiveStat();
+    }
+    @GetMapping("all")
+    public ResponseEntity<Object> getSentNotifications(){
+        List<NotificationTemplate> nots = notificationService.getSent();
+        if(!nots.isEmpty()){
+            return new ResponseEntity<>(nots, HttpStatusCode.valueOf(200));
+        }
+        return new ResponseEntity<>("no notifications available!", HttpStatusCode.valueOf(200));
     }
 
 }
