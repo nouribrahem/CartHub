@@ -1,5 +1,8 @@
 package com.order.OrderNotificationApp.model;
 
+import com.order.OrderNotificationApp.model.Enums.ProductCategory;
+import com.order.OrderNotificationApp.model.Enums.ProductVendor;
+
 public class Product {
     private String SN;
     private String Name;

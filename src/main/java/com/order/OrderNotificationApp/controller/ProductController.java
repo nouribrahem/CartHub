@@ -1,7 +1,7 @@
 package com.order.OrderNotificationApp.controller;
 
 import com.order.OrderNotificationApp.model.Product;
-import com.order.OrderNotificationApp.model.ProductCategory;
+import com.order.OrderNotificationApp.model.Enums.ProductCategory;
 import com.order.OrderNotificationApp.service.ProductService;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.order.OrderNotificationApp.service;
 
 import com.order.OrderNotificationApp.model.Product;
-import com.order.OrderNotificationApp.model.ProductCategory;
+import com.order.OrderNotificationApp.model.Enums.ProductCategory;
 import com.order.OrderNotificationApp.repository.Inventory;
 import org.springframework.stereotype.Service;
 
