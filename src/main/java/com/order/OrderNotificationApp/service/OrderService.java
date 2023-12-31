@@ -8,6 +8,7 @@ import com.order.OrderNotificationApp.repository.OrderRepository;
 import com.order.OrderNotificationApp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ public class OrderService {
             outputMessages.add("No sufficient balance!");
             return new AbstractMap.SimpleEntry<>(outputMessages, myorder);
         }
+        myorder.setAccount(user.getAccount());
         updateProductCount(orderRequest.getProductDetails());
         user.getAccount().setBalance((user.getAccount().getBalance())-((SimpleOrder) myorder).getPrice());
         ((SimpleOrder) myorder).setCreatedAt(LocalDateTime.now());
@@ -81,7 +83,7 @@ public class OrderService {
     }
     public Boolean updateProductCount(List<Map.Entry<String, Integer>> products ){
         for(Map.Entry<String, Integer> product:products){
-           if(!inventory.updateProductCount(product.getKey(),product.getValue())){
+           if(!inventory.updateProductCount(product.getKey(),-product.getValue())){
                return false;
            }
         }
@@ -94,21 +96,118 @@ public class OrderService {
         }
         return order.listOrderDetails();
     }
-    public Boolean cancelOrder(String orderId){
-        return orderRepository.remove(orderId);
+    public List<String> cancelOrderShippingSimple(int orderId){
+        outputMessages = new ArrayList<>();
+        Order order = (Order) orderRepository.getByID(orderId);
+        if(order == null){
+            outputMessages.add("Order not found!");
+            return outputMessages;
+        }
+        Duration duration = Duration.between(order.shippedAt, LocalDateTime.now());
+        if(duration.toSeconds() >= 60){
+            outputMessages.add("Could not cancel order duration exceeded (Max 60 Seconds!)");
+            return outputMessages;
+        }
+        order.getAccount().setBalance(order.getAccount().getBalance()+order.getShippingFee());
+        outputMessages.add("Shipping is canceled successfully");
+        return outputMessages;
+    }
+    public List<String> cancelOrderShippingCompound(int orderId){
+        outputMessages = new ArrayList<>();
+        Order order = (Order) orderRepository.getByID(orderId);
+        if(order == null){
+            outputMessages.add("Order not found!");
+            return outputMessages;
+        }
+        Duration duration = Duration.between(order.shippedAt, LocalDateTime.now());
+        if(duration.toSeconds() >= 60){
+            outputMessages.add("Could not cancel order duration exceeded (Max 60 Seconds!)");
+            return outputMessages;
+        }
+        for(Order o:((CompoundOrder) order).getOrders()){
+            o.getAccount().setBalance(o.getAccount().getBalance()+o.getShippingFee());
+        }
+        outputMessages.add("Shipping is canceled successfully");
+        return outputMessages;
     }
 
     public List<List<String>> placeCompoundOrder(CompoundOrderRequest orderRequest) {
         List<List<String>> compoundMessages = new ArrayList<>();
+        User user = (User) userRepository.getByID(orderRequest.getUsername());
         Order myorder = new CompoundOrder();
         for(SimpleOrderRequest simpleOrderRequest :orderRequest.getSimpleOrderRequest()){
             Map.Entry<List<String>, Order> entry2 = placeSimpleOrder(simpleOrderRequest);
             compoundMessages.add(entry2.getKey());
             ((CompoundOrder) myorder).addOrder(entry2.getValue());
         }
+        myorder.setAccount(user.getAccount());
+        myorder.setCreatedAt(LocalDateTime.now());
         ((CompoundOrder) myorder).setOrderID(orderRepository.getLastID());
         Map.Entry<String, Order> entry = new AbstractMap.SimpleEntry<>(orderRequest.getUsername(), myorder);
         orderRepository.add(entry);
         return compoundMessages;
+    }
+
+    public List<String> shipSimpleOrder(Map.Entry<String, Integer> shipRequest){
+        outputMessages = new ArrayList<>();
+        User user = (User) userRepository.getByID(shipRequest.getKey());
+        Order order = (Order) orderRepository.getByID(shipRequest.getValue());
+        if(order == null){
+            outputMessages.add("Order not found!");
+            return outputMessages;
+        }
+        user.getAccount().setBalance((user.getAccount().getBalance())-((SimpleOrder) order).getShippingFee());
+        order.setShippedAt(LocalDateTime.now());
+        outputMessages.add("Your order was shipped successfully at " + LocalDateTime.now());
+        return outputMessages;
+    }
+
+    public List<String> shipCompoundOrder(Map.Entry<String, Integer> shipRequest) {
+        outputMessages = new ArrayList<>();
+        User user = (User) userRepository.getByID(shipRequest.getKey());
+        Order order = (Order) orderRepository.getByID(shipRequest.getValue());
+        if(order == null){
+            outputMessages.add("Order not found!");
+            return outputMessages;
+        }
+        double shippingPerUser = order.getShippingFee() / ((CompoundOrder) order).getOrders().size();
+        for(Order o:((CompoundOrder) order).getOrders()){
+            o.getAccount().setBalance(o.getAccount().getBalance()-shippingPerUser);
+            o.setShippingFee(shippingPerUser);
+        }
+        order.setShippedAt(LocalDateTime.now());
+        outputMessages.add("Your order was shipped successfully at " + LocalDateTime.now());
+        return outputMessages;
+    }
+
+    public List<String> cancelOrderPlacementSimple(int orderId) {
+        outputMessages = new ArrayList<>();
+        Order order = (Order) orderRepository.getByID(orderId);
+        Duration duration = Duration.between(order.createdAt, LocalDateTime.now());
+        if(duration.toSeconds() >= 120){
+            outputMessages.add("Could not cancel order duration exceeded (Max 120 Seconds!)");
+            return outputMessages;
+        }
+        for(Product p:((SimpleOrder) order).getProductList()){
+            inventory.updateProductCount(p.getName(),p.getCount());
+        }
+        order.getAccount().setBalance(order.getAccount().getBalance()+((SimpleOrder) order).getPrice());
+        outputMessages.add("Cancellation successful");
+        return outputMessages;
+    }
+
+    public List<String> cancelOrderPlacementCompound(int orderId) {
+        outputMessages = new ArrayList<>();
+        Order order = (Order) orderRepository.getByID(orderId);
+        Duration duration = Duration.between(order.createdAt, LocalDateTime.now());
+        if(duration.toSeconds() >= 120){
+            outputMessages.add("Could not cancel order duration exceeded (Max 120 Seconds!)");
+            return outputMessages;
+        }
+        for(Order p:((CompoundOrder) order).getOrders()){
+            cancelOrderShippingSimple(p.getOrderID());
+        }
+        outputMessages.add("Cancellation successful");
+        return outputMessages;
     }
 }

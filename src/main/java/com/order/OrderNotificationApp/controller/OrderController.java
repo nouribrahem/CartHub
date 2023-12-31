@@ -31,4 +31,30 @@ public class OrderController {
        return orderService.placeCompoundOrder(orderRequest);
     }
 
+    @PostMapping("/ship/simple")
+    public List<String> shipSimpleOrder(@RequestBody Map.Entry<String ,Integer> shipRequest){
+        return orderService.shipSimpleOrder(shipRequest);
+    }
+    @PostMapping("/ship/compound")
+    public List<String> shipCompoundOrder(@RequestBody Map.Entry<String ,Integer> shipRequest){
+        return orderService.shipCompoundOrder(shipRequest);
+    }
+    @GetMapping("/cancel/simple/{orderId}")
+    public List<String> cancelOrderShippingSimple(@PathVariable int orderId){
+        return orderService.cancelOrderShippingSimple(orderId);
+    }
+    @GetMapping("/cancel/compound/{orderId}")
+    public List<String> cancelOrderShippingCompound(@PathVariable int orderId){
+        return orderService.cancelOrderShippingCompound(orderId);
+    }
+
+    @GetMapping("/cancel/simple/{orderId}")
+    public List<String> cancelOrderPlacementSimple(@PathVariable int orderId){
+        return orderService.cancelOrderPlacementSimple(orderId);
+    }
+    @GetMapping("/cancel/compound/{orderId}")
+    public List<String> cancelOrderPlacementCompound(@PathVariable int orderId){
+        return orderService.cancelOrderPlacementCompound(orderId);
+    }
+
 }
