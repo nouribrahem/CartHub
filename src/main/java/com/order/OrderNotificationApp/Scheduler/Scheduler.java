@@ -12,7 +12,7 @@ public class Scheduler {
     public Scheduler(NotificationService notificationService){
         this.notificationService = notificationService;
     }
-    @Scheduled(cron = "0/10 * * ? * *")
+    @Scheduled(cron = "0/50 * * ? * *")
     public void removeNotification(){
         notificationService.removeNotification();
     }
