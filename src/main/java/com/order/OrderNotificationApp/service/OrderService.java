@@ -99,7 +99,7 @@ public class OrderService {
         return order.listOrderDetails();
     }
 
-    public List<List<String>> placeCompoundOrder(MyRequest orderMyRequest) {
+    public Map.Entry<List<List<String>>, Order> placeCompoundOrder(MyRequest orderMyRequest) {
         List<List<String>> compoundMessages = new ArrayList<>();
         User user = (User) userRepository.getByID(orderMyRequest.getUsername());
         Order myorder = new CompoundOrder();
@@ -113,7 +113,9 @@ public class OrderService {
         ((CompoundOrder) myorder).setOrderID(orderRepository.getLastID());
         Map.Entry<String, Order> entry = new AbstractMap.SimpleEntry<>(orderMyRequest.getUsername(), myorder);
         orderRepository.add(entry);
-        return compoundMessages;
+        Map.Entry<List<List<String>>, Order> entry3 = new AbstractMap.SimpleEntry<>(compoundMessages, myorder);
+
+        return entry3;
     }
 
     public List<String> shipSimpleOrder(Map.Entry<String, Integer> shipRequest){

@@ -72,5 +72,14 @@ public class OrderRepository implements BaseRepository{
     }
 
 
-
+    public String getUserByOrderID(int orderID) {
+        for(Map.Entry<String,List<Order>> entry: orders.entrySet()){
+            for(Order o :entry.getValue()){
+                if(o.getOrderID()==orderID){
+                    return entry.getKey();
+                }
+            }
+        }
+        return  null;
+    }
 }
