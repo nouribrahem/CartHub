@@ -36,6 +36,4 @@ System deduct shipping fees for simple and compound orders.
 |   | GET | /orders/cancel/simple/{orderId} | Customers can cancel an order placement within a pre-configured automated duration . Such cancellation should update appropriately within the system . |
 |   | GET |/orders/cancel-ship/simple/{orderId} | Customers can cancel an order shipping within a pre-configured automated duration . Such cancellation should update appropriately within the system . |
 |   | GET | notifications |After a configured time , messages are removed from the queue automatically to simulate that they were actually sent . |
-|   | GET | notifications/stat | Accordingly , the system should provide some live statistics to the overall software . The target of these statistics is to provide a vision about the notifications that are sent successfully :
-• The most notified emailaddress/phone-number.
-• The most sent notification template . |
+|   | GET | notifications/stat | Accordingly , the system should provide some live statistics to the overall software . The target of these statistics is to provide a vision about the notifications that are sent successfully : • The most notified emailaddress/phone-number. • The most sent notification template . |
