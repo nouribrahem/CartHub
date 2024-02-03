@@ -17,6 +17,8 @@ Usere can create accounts and set balances for future purchases.
 System deduct shipping fees for simple and compound orders.
 ### 5- Notifications Management:
 * Create and manage notification templates for orders.
+* system supports notifications in multiple languages.
+* Notifications can be delivered through various channels.
 * Schedule notifications for future sending.
 
 ## API Endpoints
