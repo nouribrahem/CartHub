@@ -1,4 +1,4 @@
-# Ordera-and-Notifications-modules-web-API
+# Ordere-and-Notifications-modules-web-API
 ## overview
 The Orders and Notifications API Module is a Java Spring Boot project created for the smooth management of online purchase orders and notifications in a broader software system.
 Emphasizing a user-friendly interface via a RESTful API, this module ensures seamless integration and effective handling of orders, notifications, and user accounts.
